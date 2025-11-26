@@ -5,17 +5,31 @@ Built with Google Gemini (LLM), Local Models (optional), and a modular multi-age
 
 ---
 
-## 🚀 Project Overview
+## 🔹 Project Overview – ADK-MedAgent
 
-This project is an AI-powered medical report assistant. Users can upload **PDFs, images, or plain text medical reports**, and the system:
+ADK-MedAgent is a multi-agent system designed to read, interpret, and summarize medical reports. It analyzes uploaded blood reports and provides explanations in simple language, detects abnormal values, and recommends improvements based on medical guidelines.
 
+This project introduces AI Medical Summary Assistant, a multi-agent ADK-powered system that extracts, interprets, and validates key insights from medical reports with safety and clinical responsibility.
+
+- Orchestrates and coordinates all agents using a central ADK brain
 - Extracts medical values and findings
 - Interprets them in patient-friendly language
 - Validates safety and clinical responsibility
 - Provides non-prescriptive lifestyle recommendations
 - Generates optional AI insights via ADK agent
 
-**Disclaimer:** This tool is **educational only** and **does not replace medical advice**.
+🩺 Problem Statement
+
+Medical lab reports contain complex medical terminology that is difficult for non-medical users to understand.
+Patients struggle with:
+
+Interpreting medical parameters
+
+Identifying whether values are normal or risky
+
+Understanding what lifestyle or medication changes are needed
+
+Doctors do not have time to manually explain every report, so patients often leave confused, anxious, or misinformed.
 
 ---
 ```bash
@@ -23,7 +37,7 @@ This project is an AI-powered medical report assistant. Users can upload **PDFs,
 
 medical-report-summarizer/
 ├── .venv/ # Python virtual environment
-├── agents/ # AI agents: Extractor, Interpreter, Recommender, Safety, ADK
+├── agents/ # AI agents:orchestrator, Extractor, Interpreter, Recommender, Safety, ADK
 ├── app/ # Streamlit UI
 ├── data/ # Sample reports and datasets
 ├── docs/ # Documentation & flowcharts
@@ -113,6 +127,7 @@ medical-report-summarizer/
 
 | Agent | Role | Methodology / Tools |
 |-------|------|-------------------|
+| **ADK Orchestrator (Brain)** | Control | Manages **execution flow**, agent delegation, context & memory, tools routing |
 | ExtractorAgent | Sense | Extract lab values, metrics, diagnoses using **OCR, Regex, NER**, returns structured JSON |
 | InterpreterAgent | Plan | Convert extracted values into **patient-friendly interpretation** using Gemini LLM or local model |
 | SafetyValidator | Guard | Validates AI output for **clinical safety**, ensures no diagnosis, flags hallucinations |
@@ -144,3 +159,11 @@ GEMINI_API_KEY=your_api_key_here
 Run the Streamlit app:
 streamlit run app/streamlit_app.py
 ```bash
+```
+🏁 Conclusion
+
+AI Medical Summary Assistant proves how multi-agent ADK systems can accelerate healthcare workflows while ensuring accuracy, safety, and interpretability. The modular agent approach also makes the system highly scalable and future-ready.
+
+📎 Acknowledgements
+
+Special thanks to Google ADK & Kaggle Agents Intensive community for guidance and sample architecture references.
