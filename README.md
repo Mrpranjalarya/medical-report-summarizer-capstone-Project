@@ -32,7 +32,7 @@ medical-report-summarizer/
 └── tools/ # Utility scripts
 
 
-
+```
 
 ---
 
