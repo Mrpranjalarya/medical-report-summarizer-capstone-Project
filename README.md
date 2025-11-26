@@ -50,7 +50,7 @@ medical-report-summarizer/
 ```mermaid
 
 graph TD
-    A[🧠 ADK Orchestrator (Brain)] --> B[📄 Extractor Agent]
+    A[🧠ADK Orchestrator(Brain)] --> B[📄 Extractor Agent]
     A --> C[🗣 Interpreter Agent]
     A --> D[💡 Recommendation Agent]
     A --> E[🛡 Safety Validator Agent]
