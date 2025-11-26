@@ -47,8 +47,51 @@ medical-report-summarizer/
 
 
 ```
+```mermaid
 
----
+graph TD
+    A[🧠 ADK Orchestrator (Brain)] --> B[📄 Extractor Agent]
+    A --> C[🗣 Interpreter Agent]
+    A --> D[💡 Recommendation Agent]
+    A --> E[🛡 Safety Validator Agent]
+    A --> F[🔍 Optional ADK Medical Insights Agent]
+
+    subgraph Extract Phase
+        B --> B1((OCR))
+        B --> B2((Regex Parsing))
+        B --> B3((NER Medical Entity Extraction))
+    end
+
+    subgraph Interpret Phase
+        C --> C1((Gemini LLM / Local Model))
+        C --> C2((Context Memory))
+    end
+
+    subgraph Recommendation Phase
+        D --> D1((Lifestyle Guidance))
+        D --> D2((Diet – Sleep – Exercise – Hydration Tips))
+    end
+
+    subgraph Validation Phase
+        E --> E1((Clinical Safety Check))
+        E --> E2((No Diagnosis / No Prescription))
+        E --> E3((Hallucination Detection))
+    end
+
+    subgraph Optional ADK Insights
+        F --> F1((Pattern-Based Insights))
+        F --> F2((Future Health Risk Factors – Non Medical))
+    end
+
+    %% Workflow Loop
+    E -->|⚠ If Unsafe| C
+    E -->|⚠ If Missing Info| B
+    E -->|✔ Approved| A
+    A -->|Final Output| Z[📦 Final Medical Summary Report]
+
+
+```
+
 
 ## 🏗 Architecture & Workflow
 ```yaml
