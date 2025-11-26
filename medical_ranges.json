@@ -1,0 +1,60 @@
+{
+  "Hemoglobin": {
+    "unit": "g/dL",
+    "male": [
+      13.5,
+      17.5
+    ],
+    "female": [
+      12.0,
+      15.5
+    ],
+    "note": "adult ranges"
+  },
+  "WBC": {
+    "unit": "/uL",
+    "all": [
+      4000,
+      11000
+    ]
+  },
+  "Platelets": {
+    "unit": "/uL",
+    "all": [
+      150000,
+      450000
+    ]
+  },
+  "HbA1c": {
+    "unit": "%",
+    "all": [
+      4.0,
+      5.6
+    ]
+  },
+  "Creatinine": {
+    "unit": "mg/dL",
+    "male": [
+      0.74,
+      1.35
+    ],
+    "female": [
+      0.59,
+      1.04
+    ]
+  },
+  "ALT": {
+    "unit": "U/L",
+    "all": [
+      7,
+      56
+    ]
+  },
+  "AST": {
+    "unit": "U/L",
+    "all": [
+      10,
+      40
+    ]
+  }
+}

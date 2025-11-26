@@ -1,0 +1,11 @@
+__pycache__/
+.env
+*.pyc
+*.pyo
+*.pyd
+instance/
+.webassets-cache
+.DS_Store
+logs/
+memory/memory_bank.json
+secrets.json

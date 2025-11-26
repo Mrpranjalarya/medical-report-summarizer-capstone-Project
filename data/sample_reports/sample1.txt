@@ -1,0 +1,4 @@
+CBC REPORT
+Hemoglobin: 11.2 g/dL
+WBC: 13,500 /uL
+Platelets: 150,000 /uL
