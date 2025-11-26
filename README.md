@@ -18,7 +18,7 @@ This project is an AI-powered medical report assistant. Users can upload **PDFs,
 **Disclaimer:** This tool is **educational only** and **does not replace medical advice**.
 
 ---
-
+```bash
 ## 📂 Project Structure
 
 medical-report-summarizer/
@@ -30,8 +30,6 @@ medical-report-summarizer/
 ├── memory/ # Session service and memory storage
 ├── tests/ # Unit tests
 └── tools/ # Utility scripts
-
-
 
 
 
