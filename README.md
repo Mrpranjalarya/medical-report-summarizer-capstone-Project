@@ -50,11 +50,11 @@ medical-report-summarizer/
 ```mermaid
 
 graph TD
-    A[🧠ADK Orchestrator(Brain)] --> B[📄 Extractor Agent]
-    A --> C[🗣 Interpreter Agent]
-    A --> D[💡 Recommendation Agent]
-    A --> E[🛡 Safety Validator Agent]
-    A --> F[🔍 Optional ADK Medical Insights Agent]
+    A["🧠ADK Orchestrator-Brain"] --> B["📄 Extractor Agent"]
+    A --> C["🗣 Interpreter Agent"]
+    A --> D["💡 Recommendation Agent"]
+    A --> E["🛡 Safety Validator Agent"]
+    A --> F["🔍 Optional ADK Medical Insights Agent"]
 
     subgraph Extract Phase
         B --> B1((OCR))
