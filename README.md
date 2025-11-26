@@ -1,3 +1,6 @@
+![Project Thumbnail](assets/Gemini_Generated_Image_qjmc6rqjmc6rqjmc.png)
+
+
 # 🧠 AI Medical Summary Assistant
 
 **Medical Report Summarizer & Patient Support System**  
