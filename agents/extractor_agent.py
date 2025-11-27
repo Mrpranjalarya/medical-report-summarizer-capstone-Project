@@ -1,8 +1,8 @@
-
 # agents/extractor_agent.py
-import re
 
-# A minimal list of common lab param names to look for in text
+import re
+from typing import Dict, Any, List
+
 COMMON_PARAMS = {
     "hemoglobin": ["hemoglobin", "hb"],
     "wbc": ["wbc", "white blood cell", "white blood cells"],
@@ -12,61 +12,89 @@ COMMON_PARAMS = {
     "glucose": ["glucose", "blood sugar", "sugar"],
     "creatinine": ["creatinine"],
     "bun": ["bun", "urea"],
-    "a1c": ["hba1c", "a1c"]
+    "a1c": ["hba1c", "a1c", "hb1c"],
 }
 
-# heuristics to find numeric value and unit near the parameter name
-VALUE_RE = re.compile(r"([-+]?\d+(?:\.\d+)?)(?:\s*(mg/dL|g/dL|x10\^3/µL|x10\^3/µL|/µL|mmol/L)?)", re.I)
+VALUE_RE = re.compile(
+    r"([-+]?\d+(?:\.\d+)?)(?:\s*(mg/dl|g/dl|mmol/l|\/µl|x10\^3\/µl|%))?",
+    re.I
+)
 
 class ExtractorAgent:
     """
-    Offline rule-based extractor.
-    Methods:
-      - run(report_text) -> dict with "extracted": list of param dicts
+    ExtractorAgent — Rule-based medical value extraction agent.
+    Purpose:
+    - Detect medical measurements from lab reports
+    - Extract numerical values and units
+    - Output normalized structured data for the next agents
+
+    Output format:
+    {
+      "agent": "ExtractorAgent",
+      "status": "success",
+      "facts": [
+        {"name": "...", "value": 0.0, "unit": "...", "raw_line": "..."}
+      ]
+    }
     """
-    def __init__(self):
-        pass
 
-    def run(self, report_text: str):
+    def __init__(self, debug: bool = False):
+        self.debug = debug
+        self.agent_name = "ExtractorAgent"
+
+    def log(self, message: str):
+        if self.debug:
+            print(f"[ExtractorAgent] {message}")
+
+    def run(self, report_text: str) -> Dict[str, Any]:
+        if not report_text or not report_text.strip():
+            return {
+                "agent": self.agent_name,
+                "status": "error",
+                "error": "Empty report text received",
+                "facts": []
+            }
+
         text = report_text.lower()
-        extracted = []
-
-        # find lines with numbers
         lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+
+        extracted: List[Dict[str, Any]] = []
 
         for ln in lines:
             for canonical, keywords in COMMON_PARAMS.items():
-                for kw in keywords:
-                    if kw in ln:
-                        # try to find numeric value in same line
-                        m = VALUE_RE.search(ln)
-                        if m:
-                            val = float(m.group(1))
-                            unit = m.group(2) or ""
-                            extracted.append({
-                                "name": canonical,
-                                "raw_line": ln,
-                                "value": val,
-                                "unit": unit,
-                                "reference_range": ""
-                            })
-                        else:
-                            # if no numeric value, append mention only
-                            extracted.append({
-                                "name": canonical,
-                                "raw_line": ln,
-                                "value": None,
-                                "unit": "",
-                                "reference_range": ""
-                            })
-                        break
+                if any(kw in ln for kw in keywords):
+                    match = VALUE_RE.search(ln)
+                    if match:
+                        value = float(match.group(1))
+                        unit = match.group(2) or ""
+                        extracted.append({
+                            "name": canonical,
+                            "value": value,
+                            "unit": unit,
+                            "raw_line": ln
+                        })
+                        self.log(f"Extracted {canonical} = {value} {unit}")
+                    else:
+                        # Mention without value
+                        extracted.append({
+                            "name": canonical,
+                            "value": None,
+                            "unit": "",
+                            "raw_line": ln
+                        })
+                        self.log(f"Mention detected: {canonical}")
+                    break
 
-        # simple dedup by name (keep first occurrence)
+        # Dedupe
         seen = set()
         dedup = []
-        for e in extracted:
-            if e["name"] not in seen:
-                dedup.append(e)
-                seen.add(e["name"])
+        for item in extracted:
+            if item["name"] not in seen:
+                dedup.append(item)
+                seen.add(item["name"])
 
-        return {"extracted": dedup}
+        return {
+            "agent": self.agent_name,
+            "status": "success",
+            "facts": dedup
+        }

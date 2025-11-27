@@ -2,33 +2,80 @@
 
 RECOMMENDATIONS = {
     "hemoglobin": {
-        "low": ["Increase dietary iron (spinach, legumes), get clinician advice on iron supplementation."],
-        "high": ["High hemoglobin can be investigated by clinician; stay hydrated."]
+        "low": [
+            "Increase dietary iron (spinach, legumes).",
+            "Ask clinician about iron supplementation if needed."
+        ],
+        "high": [
+            "High hemoglobin may require medical evaluation.",
+            "Stay hydrated and monitor changes."
+        ],
+        "normal": [
+            "Maintain a balanced intake of iron-rich foods and stay hydrated."
+        ]
     },
     "cholesterol": {
-        "high": ["Reduce saturated fats, increase fiber, consider follow-up lipid panel and clinician consult."],
-        "low": []
+        "high": [
+            "Reduce saturated fats and increase fiber.",
+            "Schedule a follow-up lipid panel and clinician consultation."
+        ],
+        "normal": [
+            "Continue a heart-healthy diet and regular exercise."
+        ]
     },
     "glucose": {
-        "high": ["Reduce simple carbs, schedule fasting blood glucose test, consult clinician for diabetes screening."]
+        "high": [
+            "Reduce simple carbohydrates and sugary foods.",
+            "Schedule fasting blood glucose test and clinician screening."
+        ],
+        "normal": [
+            "Maintain balanced meals and regular physical activity."
+        ]
     }
 }
+
+GENERAL_HEALTH_RECOMMENDATION = (
+    "Maintain a balanced diet, regular exercise, and follow-up with your healthcare provider."
+)
+
 
 class RecommenderAgent:
     def __init__(self):
         pass
 
     def run(self, interpreted):
-        recs = []
+        """
+        interpreted → list of dicts:
+        [
+            {"name": "hemoglobin", "status": "low", "value": 10.2, ...},
+            {"name": "cholesterol", "status": "high", "value": 242, ...}
+        ]
+        """
+        final_recs = []
+
         for it in interpreted:
-            name = it.get("name")
-            status = it.get("status")
+            name = (it.get("name") or "").lower()
+            status = (it.get("status") or "").lower()
+
             if not name or not status:
                 continue
+
             rules = RECOMMENDATIONS.get(name, {})
-            rec = rules.get(status, [])
-            recs.extend(rec)
-        # Default general advice
-        if not recs:
-            recs.append("Maintain a balanced diet, regular exercise, and follow-up with your healthcare provider.")
-        return recs
+            category_recs = rules.get(status, [])
+
+            if category_recs:
+                final_recs.append({
+                    "marker": name,
+                    "status": status,
+                    "recommendations": list(set(category_recs))  # remove duplicates if any
+                })
+
+        # If nothing matched → general well-being advice
+        if not final_recs:
+            final_recs.append({
+                "marker": "general",
+                "status": "neutral",
+                "recommendations": [GENERAL_HEALTH_RECOMMENDATION]
+            })
+
+        return final_recs
