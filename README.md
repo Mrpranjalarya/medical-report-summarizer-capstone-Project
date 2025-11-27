@@ -196,15 +196,11 @@ cd medical-report-summarizer
 ---
 Create virtual environment & install dependencies:
 
-Create virtual environment & install dependencies:
-Add your Gemini API key in a .env file:
 
-GEMINI_API_KEY=your_api_key_here
-```bash
 ---
 Run the Streamlit app:
 streamlit run app/streamlit_app.py
-```bash
+
 ```
 🏁 Conclusion
 
